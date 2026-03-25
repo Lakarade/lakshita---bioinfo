@@ -10,6 +10,7 @@ def gc_content(sequence):
 
 sequence =""
 
+# Opens the FASTA file and reads it
 with open("gene.fna") as file:
     for line in file:
         if not line.startswith(">"):
@@ -17,6 +18,7 @@ with open("gene.fna") as file:
 gc = gc_content(sequence)
 at = 100 - gc
 
+# Prints sequence , GC content and AT content
 print("Sequence length:" ,
 len(sequence), "bp")
 print("GC_content:", round(gc,2),
