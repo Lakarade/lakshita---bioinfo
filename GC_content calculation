@@ -1,28 +1,40 @@
-# Function for calculation of GC content
-def gc_content(sequence):
-    # Counting G and C nucleotides
-    g = sequence.count("G")
-    c = sequence.count("C")
+file_name = input("Enter FASTA file name: ")
 
-    # Calculating G and C percentage
-    return (g + c) / len(sequence) * 100
+current_header = ""
+current_sequence = ""
 
-
-sequence =""
-
-# Opens the FASTA file and reads it
-with open("gene.fna") as file:
+with open(file_name) as file:
     for line in file:
-        if not line.startswith(">"):
-           sequence +=line.strip()
-gc = gc_content(sequence)
-at = 100 - gc
+        line = line.strip()
 
-# Prints sequence , GC content and AT content
-print("Sequence length:" ,
-len(sequence), "bp")
-print("GC_content:", round(gc,2),
-"%")
-print("AT content:" , round(at,2),
-"%")
+        if line.startswith(">"):
+            if current_header != "":
+                length = len(current_sequence)
+                g = current_sequence.count("G")
+                c = current_sequence.count("C")
+                gc = (g + c) / length * 100
+                at = 100 - gc
+
+                print("\nGene:", current_header)
+                print("Length:", length)
+                print("GC:", gc)
+                print("AT:", at)
+
+            current_header = line
+            current_sequence = ""
+        else:
+            current_sequence += line
+
+# Print the last gene
+if current_header != "":
+    length = len(current_sequence)
+    g = current_sequence.count("G")
+    c = current_sequence.count("C")
+    gc = (g + c) / length * 100
+    at = 100 - gc
+
+    print("\nGene:", current_header)
+    print("Length:", length)
+    print("GC:", gc)
+    print("AT:", at)
   
